@@ -1,7 +1,14 @@
 # energyRisk
 An R package with tools for energy market risk management  
   
-### Install from Github
+- SPAN® file reader  
+- Option pricing models
+
+### Upcoming features
+- Forward curve
+- Hedging strategies
+
+### Install from GitHub
 ```
 install.packages("devtools")  
 library(devtools)
