@@ -5,8 +5,8 @@ An R package with tools for energy market risk management
 - Option pricing models
 
 ### Upcoming features
-- Forward curve
-- Hedging strategies
+- Maximum smoothness forward curve
+
 
 ### Install from GitHub
 ```
