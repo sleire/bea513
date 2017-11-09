@@ -32,11 +32,12 @@ calc_aqi <- function(con,
     }
     aqi[i] <- (aqi_up[k]-aqi_lo[k])*(con[i]-c_lo[k])/(c_up[k]-c_lo[k]) + aqi_lo[k]
   }
-  return(data.frame(Concentration = con, AQI = aqi))
+  # round the aqi to whole number and return df
+  return(data.frame(Concentration = con, AQI = round(aqi)))
 }
 
 # function for calculating pollution alert score (PAS) from aqi time series
-calc_pas <- function(aqi, limit = 200) {
+calc_pas <- function(aqi, limit = 300) {
   # Calculates the cumulative sum over an aqi limit value (PAS)
   #
   # Args:
@@ -47,7 +48,7 @@ calc_pas <- function(aqi, limit = 200) {
   #   Data frame with total nr of obs, nr of obs over limit, Limit and PAS
   
   # the pas calculation
-  pas <- sum(aqi[aqi > limit])
+  pas <- sum(aqi[aqi > limit]-limit)
   npas <- length(aqi[aqi > limit])
 
   return(data.frame(TotObs = length(aqi), PasObs = npas, PAS = pas))
