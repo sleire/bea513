@@ -1,5 +1,6 @@
 library(data.table)
 library(ggplot2)
+source('calc_aqi_pas.R')
 
 url <- 'http://www.stateair.net/web/assets/historical/'
 bei <- c('Beijing_2017_HourlyPM25_created20170803.csv', 'Beijing_2016_HourlyPM25_created20170201.csv',
@@ -53,4 +54,4 @@ ggplot(bd, aes(x = Date)) +
 
 # burn analysis for monthly contracts
 # calc_pas(bd$AQI[bd$Year==2015 & bd$Month==12])
-pas200 <- bd[, .(Year=mean(AQI)), by = Month]
+pas300 <- bd[, .(Year=mean(AQI)), by = Month]
