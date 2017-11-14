@@ -31,6 +31,7 @@ ggplot(bd, aes(x = Date, y = AQI)) + geom_line()  #
 bd$d <- seq_along(bd$Date)
 season <- lm(bd$Value ~ cos( 2*pi*bd$d / 365 ))
 bd$season <- predict(season, data.frame(bd$d))
+bd$ValSeas <- bd$Value - bd$season
 
 # aqi trend model
 aqi_season <- lm(bd$AQI ~ cos( 2*pi*bd$d / 365 ))
@@ -44,6 +45,12 @@ ggplot(bd, aes(x = Date)) +
   geom_hline(yintercept = 150, colour = "red4") +
   geom_hline(yintercept = 250, colour = "violetred4")
 
+# plot detrended PM2.5 = PM2.5 - season
+ggplot(bd, aes(x = Date)) + 
+  geom_line(aes(y = ValSeas)) + 
+  xlab("") + ylab("PM2.5 micrograms/m3") +
+  theme(legend.position="none") + ggtitle("Beijing Particulate Matter PM2.5 - deseasonalized")
+
 # plot with trend function
 ggplot(bd, aes(x = Date)) + 
   geom_line(aes(y = AQI)) + 
@@ -53,5 +60,6 @@ ggplot(bd, aes(x = Date)) +
   geom_hline(yintercept = 300, colour = "violetred4")
 
 # burn analysis for monthly contracts
-# calc_pas(bd$AQI[bd$Year==2015 & bd$Month==12])
-pas300 <- bd[, .(Year=mean(AQI)), by = Month]
+burn <- setDT(bd)[, .(PAS = calc_pas(AQI)$PAS), by = .(Year, Month)]
+burn <- reshape(burn, idvar = "Month", timevar = "Year", direction = "wide")
+
